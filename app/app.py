@@ -245,6 +245,8 @@ if all_inputs_are_valid and len(R) > 0:
     )
     df = pd.DataFrame(R, columns=["Identifier", "SMILES", "InChIKey"])
 
+    my_inchikeys = df["InChIKey"].tolist()
+
     df_done = df[df["InChIKey"].isin(predictions_inchikeys)]
     df_todo = df[~df["InChIKey"].isin(predictions_inchikeys)]
 
@@ -294,14 +296,16 @@ if all_inputs_are_valid and len(R) > 0:
         for k in ["sims-1", "sims-3", "logp", "mw"]:
             df_todo[k] = results[k]
 
-    if df_done.shape[0] > 0 and df_todo.shape[0]:
+    if df_done.shape[0] > 0 and df_todo.shape[0] > 0:
         df_ = pd.concat([df_done, df_todo])
-    elif df_done.shape[0] > 0:
-        df_ = df_done
     else:
-        df_ = df_todo
+        if df_done.shape[0] > 0:
+            df_ = df_done
+        else:
+            df_ = df_todo
     df_ = df_.drop(columns=["Identifier", "SMILES"])
     df = df.merge(df_, on="InChIKey", how="left")
+    df.drop_duplicates(subset=['InChIKey'], keep='first', inplace=True, ignore_index=True)
     df = df.rename(columns=model_display)
     applicability_display = {
         "mw": "MW",
@@ -340,10 +344,12 @@ if all_inputs_are_valid and len(R) > 0:
             all_texts += [score_text(v, c)]
         return "\n".join(all_texts)
 
+    dorig = pd.DataFrame({"InChIKey": my_inchikeys})
+    df = dorig.merge(df, on="InChIKey", how="left")
     df = df.reset_index(inplace=False, drop=True)
-    for r in df.iterrows():
+    for i, r in enumerate(df.iterrows()):
         v = r[1]
-        st.markdown("### {0}".format(inputs[r[0]]))
+        st.markdown("#### Input {0}: `{1}`".format(i+1, inputs[r[0]]))
         cols = st.columns(4)
         cols[0].markdown("**Fragment**")
         cols[0].image(get_fragment_image(v["SMILES"]))
