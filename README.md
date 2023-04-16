@@ -19,11 +19,19 @@ cd mini-automl
 python -m pip install -e .
 cd ..
 
-# downloa and install the current repository
+# download and install the current repository
 git clone https://github.com/ligand-discovery/fragment-predictor.git
 cd fragment-predictor
 python -m pip install -r requirements.txt
+
 ```
+
+## Download the necessary data
+
+In the `fragment-predictor` folder root, download and unzip the following folders:
+* `models`: 
+* `data`: 
+
 
 ## Run the app
 
