@@ -146,9 +146,27 @@ specific_promiscuity_models = [
 ]
 st.sidebar.text(model_to_markdown(specific_promiscuity_models))
 
+st.sidebar.markdown("**Aggregated score**")
+st.sidebar.text("Sum             : Sum of individual promiscuity predictors.")
+
 st.sidebar.title("Signature models")
 signature_models = ["signature_{0}".format(i) for i in range(10)]
 st.sidebar.text(model_to_markdown(signature_models))
+
+st.sidebar.title("Chemical space")
+s = ["MW              : Molecular weight.",
+     "LogP            : Walden-Crippen LogP.",
+     "Sim-1           : Tanimoto similarity to the most ",
+     "                  similar fragment in the training set.",
+     "Sim-3           : Tanimoto similarity to the third ",
+     "                  most similar fragment in the training set."]
+
+st.sidebar.text("\n".join(s))
+
+import textwrap
+s = textwrap.wrap("* Percentages in parenthesis denote the percentile of the score across the Enamine collection of FFFs (>250k compounds)", width=60)
+st.sidebar.text("\n".join(s))
+
 
 models = {}
 all_models = dm["model_name"].tolist()
@@ -161,7 +179,7 @@ for k in keys:
     placeholder_text += [random.choice([k, enamine_catalog_dict[k]])]
 placeholder_text = "\n".join(placeholder_text)
 
-text_input = st.text_area(label="Input fragments")
+text_input = st.text_area(label="Input your fully functionalized fragments:")
 inputs = [x.strip(" ") for x in text_input.split("\n")]
 inputs = [x for x in inputs if x != ""]
 if len(inputs) > 999:
@@ -365,7 +383,7 @@ if all_inputs_are_valid and len(R) > 0:
 
 else:
     st.info(
-        "This tool expects fully functionalized fragments (FFF), including the diazirine+alkyne probe (CRF). Enamine provides a good [catalog](https://enamine.net/compound-libraries/fragment-libraries/fully-functionalized-probe-library) of FFF fragments."
+        "This tool expects fully functionalized fragments (FFF) as input, including the diazirine+alkyne probe (CRF). We have tailored the chemical space of the predictions to FFFs; the app will through an error if any of the input molecules does not contain a CRF region. Enamine provides a good [catalog](https://enamine.net/compound-libraries/fragment-libraries/fully-functionalized-probe-library) of FFFs. For a quick test input, use any of the options below."
     )
 
     example_0 = ["Z5645472552", "Z5645472643", "Z5645472785"]
@@ -381,7 +399,7 @@ else:
     st.text("\n".join(example_1))
 
     example_2 = ["C310", "C045", "C391"]
-    st.markdown("**Input Ligand Discovery idenifiers...**")
+    st.markdown("**Input Ligand Discovery identifiers...**")
     st.text("\n".join(example_2))
 
     example_3 = [
