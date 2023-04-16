@@ -12,6 +12,7 @@ from rdkit.Chem import AllChem
 from rdkit import DataStructs
 from rdkit.Chem import Descriptors
 from scipy import stats
+import textwrap
 
 st.set_page_config(
     page_title="Fragment predictor app",
@@ -163,8 +164,13 @@ s = ["MW              : Molecular weight.",
 
 st.sidebar.text("\n".join(s))
 
-import textwrap
-s = textwrap.wrap("* Percentages in parenthesis denote the percentile of the score across the Enamine collection of FFFs (>250k compounds)", width=60)
+s = textwrap.wrap("*  The score in parenthesis corresponds to the mean AUROC in 10 train-test splits.")
+st.sidebar.text("\n".join(s))
+
+st.sidebar.markdown("**In the main page...**")
+s = textwrap.wrap("1. Percentages in parenthesis denote the percentile of the score across the Enamine collection of FFFs (>250k compounds)", width=60)
+st.sidebar.text("\n".join(s))
+s = textwrap.wrap("2. The exclamation sign (!) indicates that the corresponding model has an AUROC accuracy below 0.7.", width=60)
 st.sidebar.text("\n".join(s))
 
 

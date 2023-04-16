@@ -29,8 +29,8 @@ python -m pip install -r requirements.txt
 ## Download the necessary data
 
 In the `fragment-predictor` folder root, download and unzip the following folders:
-* `models`: 
-* `data`: 
+* `models`: https://ligand-discovery.s3.eu-central-1.amazonaws.com/fragment-predictor/models.zip
+* `data`: https://ligand-discovery.s3.eu-central-1.amazonaws.com/fragment-predictor/data.zip
 
 
 ## Run the app
