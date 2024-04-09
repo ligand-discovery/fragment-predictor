@@ -19,11 +19,16 @@ cd mini-automl
 python -m pip install -e .
 cd ..
 
+# download and install tabpfn with cpu requirements
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+git clone https://github.com/DhanshreeA/TabPFN.git
+pip install TabPFN/.
+rm -rf TabPFN
+
 # download and install the current repository
 git clone https://github.com/ligand-discovery/fragment-predictor.git
 cd fragment-predictor
 python -m pip install -r requirements.txt
-
 ```
 
 ## Download the necessary data

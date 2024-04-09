@@ -177,7 +177,7 @@ st.sidebar.text("\n".join(s))
 models = {}
 all_models = dm["model_name"].tolist()
 for r in all_models:
-    models[r] = joblib.load(os.path.join(root, "..", "models", "{0}.joblib".format(r)))
+    models[r] = os.path.join(root, "..", "models", "{0}.joblib".format(r))
 
 placeholder_text = []
 keys = random.sample(enamine_catalog_ids_set, 5)
@@ -262,8 +262,9 @@ if all_inputs_are_valid and len(R) > 0:
 
         for i, model_name in enumerate(all_models):
             print(model_name)
-            model = models[model_name]
+            model = joblib.load(models[model_name])
             vals = model.predict(X)
+            del model
             progress_bar.progress((i + 1) / len(all_models))
             df_todo[model_name] = vals
 
