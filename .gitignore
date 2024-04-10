@@ -1,6 +1,8 @@
 .DS_Store
 data
 models
+models.zip
+data.zip
 __MACOSX
 
 # Byte-compiled / optimized / DLL files
