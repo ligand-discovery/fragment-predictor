@@ -14,6 +14,9 @@ from rdkit.Chem import Descriptors
 from scipy import stats
 import textwrap
 
+import warnings
+warnings.filterwarnings('ignore')
+
 st.set_page_config(
     page_title="Fragment predictor app",
     layout="wide",
@@ -257,6 +260,8 @@ if all_inputs_are_valid and len(R) > 0:
 
     if df_todo.shape[0] > 0:
         X = fe.transform(df_todo["SMILES"].tolist())
+
+        st.info("Making predictions... this make take a few seconds. Please be patient. We may experience high traffic. If something goes wrong, please try again later.")
 
         progress_bar = st.progress(0)
 
